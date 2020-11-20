@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4. Significance Testing for Continuous Metrics (Bayesian Approach) &#8212; A/B Testing in Python</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5. Variance Reduction Methods" href="5_Variance_Reduction_Methods.html" />
+    <link rel="prev" title="3. Significance Testing for Continuous Metrics (Frequestist Approach)" href="3_Continuous_Metrics_Frequentist_Approach.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/logo_ab_fh.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">A/B Testing in Python</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1_Conversion_Probabilities_Frequentist_Approach.html">
+   1. Conversion Probabilities (Frequentist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2_Conversion_Probabilities_Bayesian_Approach.html">
+   2. Conversion Probabilities (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3_Continuous_Metrics_Frequentist_Approach.html">
+   3. Significance Testing for Continuous Metrics (Frequestist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4. Significance Testing for Continuous Metrics (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5_Variance_Reduction_Methods.html">
+   5. Variance Reduction Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6_Experiment_Feature_Importance.html">
+   6. Experiment Feature Importance
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/4_Bayesian_Estimation_Supersedes_The_T_Test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F4_Bayesian_Estimation_Supersedes_The_T_Test.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/4_Bayesian_Estimation_Supersedes_The_T_Test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cleaning-data-remove-outliers">
+   Cleaning data - Remove Outliers
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="significance-testing-for-continuous-metrics-bayesian-approach">
+<h1>4. Significance Testing for Continuous Metrics (Bayesian Approach)<a class="headerlink" href="#significance-testing-for-continuous-metrics-bayesian-approach" title="Permalink to this headline">¶</a></h1>
+<p>This chapter will discuss a method described by <a class="reference external" href="https://pdfs.semanticscholar.org/dea6/0927efbd1f284b4132eae3461ea7ce0fb62a.pdf">Kruschke (2013)</a> known as BEST (Bayesian Estimation Supersedes the T-test), which uses pre-determined model parameters in conjunction with our known (posterior) data to generate credible posterior distributions using Markov Chain Monte-Carlo simulations with pymc3. This method is the Bayesian equivalent to the t-test and provides some of the outputs previously discussed that frequentist statistics fail to provide. So this may may be your preferred method for explaining the results of your experiment to your stakeholders, if you are working with continuous data.</p>
+<p>When performing BEST analysis, we must set some pre-determined model parameters, using a distribution for our priors that best suites/explains our posterior (known) data. Note that in both this example and methods conducted by Kruschke, data are described by a Student-t distribution. Although this is not always appropriate, utilising a t-distribution can be more informative than a normal distribution, as it describes data as pertaining a tail; which is often the case with continuous metrics extrapolated from web data (that is “super users” often exist). It is worth pointing out that you may want to tweak the following code if this does not apply to your data:</p>
+<p><img alt="" src="_images/t_vs_normal_3.png" /></p>
+<p>To describe a <a class="reference external" href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">Student-t distribution</a>, you need both mean μ (normal distribution) and standard deviation σ (uniform distribution) inputs. You will also need to specify the degree of freedom ν, which follows a shifted exponential distribution. The normality of the data is mediated by ν. If ν =&gt; 30, then the computed distribution is close to a normal distribution; therefore the value of 1/29 is used as a normality threshold.</p>
+<p>All of this information will be input below, this image from Kruschke may help you visualise the model parameters and how they inform our posterior distributions:</p>
+<p><img alt="" src="_images/model_best_4.png" /></p>
+<p>But first - import necessary packages for analysis (are you bored of me saying thise yet?):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --no-progress-bar pymc3
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage:   
+  pip install [options] &lt;requirement specifier&gt; [package-index-options] ...
+  pip install [options] -r &lt;requirements file&gt; [package-index-options] ...
+  pip install [options] [-e] &lt;vcs project url&gt; ...
+  pip install [options] [-e] &lt;local project path&gt; ...
+  pip install [options] &lt;archive url/path&gt; ...
+
+no such option: --no-progress-bar
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stat</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">IPython.core.pylabtools</span> <span class="kn">import</span> <span class="n">figsize</span>
+<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="k">as</span> <span class="nn">tt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats.mstats</span> <span class="kn">import</span> <span class="n">mquantiles</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Import your browser level data (each row will represent a unique id or cookie id):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">local</span> <span class="o">=</span> <span class="s1">&#39;keanu_df.csv&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">local</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode_escape&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_cookie_id</th>
+      <th>Variant</th>
+      <th>Pvs_per_session</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>##kdjdsvbnkdf</td>
+      <td>Control_Matrix</td>
+      <td>2.343523</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>kldvnlkaefv</td>
+      <td>Control_Matrix</td>
+      <td>1.234300</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>nvaljkdfnvkld4798</td>
+      <td>Control_Matrix</td>
+      <td>3.353000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>shanuf9v354###nkas</td>
+      <td>Control_Matrix</td>
+      <td>3.319751</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>nbncjkbd</td>
+      <td>Control_Matrix</td>
+      <td>3.824490</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>dkvhjdk844</td>
+      <td>Control_Matrix</td>
+      <td>8.367136</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>sjhkjfhbdwjkv</td>
+      <td>Control_Matrix</td>
+      <td>8.871875</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>kldvnlkaefv</td>
+      <td>Control_Matrix</td>
+      <td>9.376613</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>nvaljkdfnvkld4805</td>
+      <td>Control_Matrix</td>
+      <td>9.881352</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>shanuf9v361</td>
+      <td>Variant_BT</td>
+      <td>3.153445</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>You may want to group by count to ensure you have equally weighted experimental groups, in order to ascertain you have grouped/collected the data correctly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_cookie_id</th>
+      <th>Pvs_per_session</th>
+    </tr>
+    <tr>
+      <th>Variant</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Control_Matrix</th>
+      <td>99</td>
+      <td>99</td>
+    </tr>
+    <tr>
+      <th>Variant_BT</th>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You can now check the overall mean values for the Pvs_per_session metric:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pvs_per_session</th>
+    </tr>
+    <tr>
+      <th>Variant</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Control_Matrix</th>
+      <td>5.726181</td>
+    </tr>
+    <tr>
+      <th>Variant_BT</th>
+      <td>7.670531</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="cleaning-data-remove-outliers">
+<h2>Cleaning data - Remove Outliers<a class="headerlink" href="#cleaning-data-remove-outliers" title="Permalink to this headline">¶</a></h2>
+<p>Here we will look to remove data + 3 standard deviations from the mean for Pvs_per_session; this is a scientific standard and alligns with stats engines from numerous online A/B testing platforms. First identify the standard deviation for Pvs_per_session:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">std</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Standard deviation of experiment metric is </span><span class="si">% s</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Standard deviation of experiment metric is 3.0591
+</pre></div>
+</div>
+</div>
+</div>
+<p>Identify data &gt; 3 standard deviations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outliers</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">std</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remove data from data-frame that is </span><span class="si">% s</span><span class="s2"> above the mean of the data&quot;</span>
+     <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">outliers</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Remove data from data-frame that is 9.1774 above the mean of the data
+</pre></div>
+</div>
+</div>
+</div>
+<p>New data-frame that omits this range and look at new computed means:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pvs_per_session&#39;</span><span class="p">]</span> <span class="o">&lt;</span>  <span class="n">outliers</span><span class="p">)]</span>
+<span class="n">df_filtered</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pvs_per_session</th>
+    </tr>
+    <tr>
+      <th>Variant</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Control_Matrix</th>
+      <td>5.338705</td>
+    </tr>
+    <tr>
+      <th>Variant_BT</th>
+      <td>5.465452</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Create seperate frames for variants:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Control_Matrix</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[(</span><span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;Variant&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Control_Matrix&#39;</span><span class="p">)]</span>
+<span class="n">Variant_BT</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[(</span><span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;Variant&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Variant_BT&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Set the pooled mean and standard deviation and degrees of freedom parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">Control_Matrix</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">,</span> <span class="n">Variant_BT</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">pooled_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">Control_Matrix</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">,</span> <span class="n">Variant_BT</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">variance</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pooled_std</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fit the model into your data and run the MCMC simulations to calculate a series of posterior distributions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_1</span><span class="p">:</span>
+    <span class="n">mu_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;mu_A&quot;</span><span class="p">,</span> <span class="n">pooled_mean</span><span class="p">,</span> <span class="n">sd</span> <span class="o">=</span> <span class="n">variance</span><span class="p">)</span>
+    <span class="n">mu_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;mu_B&quot;</span><span class="p">,</span> <span class="n">pooled_mean</span><span class="p">,</span> <span class="n">sd</span> <span class="o">=</span> <span class="n">variance</span><span class="p">)</span>
+    <span class="n">std_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s2">&quot;std_A&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">std_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s2">&quot;std_B&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">nu_minus_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;nu-1&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="mi">29</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING (theano.gof.compilelock): Overriding existing lock by dead process &#39;87659&#39; (I am process &#39;87917&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">model_1</span><span class="p">:</span>
+    <span class="n">obs_A</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">StudentT</span><span class="p">(</span><span class="s2">&quot;obs_A&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">mu_A</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">std_A</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="n">nu_minus_1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">Control_Matrix</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+    <span class="n">obs_B</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">StudentT</span><span class="p">(</span><span class="s2">&quot;obs_B&quot;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">mu_B</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">std_B</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="n">nu_minus_1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">Variant_BT</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">find_MAP</span><span class="p">()</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Metropolis</span><span class="p">(</span><span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="n">mu_A</span><span class="p">,</span> <span class="n">mu_B</span><span class="p">,</span> <span class="n">std_A</span><span class="p">,</span> <span class="n">std_B</span><span class="p">,</span> <span class="n">nu_minus_1</span><span class="p">])</span>
+    <span class="n">trace_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">25000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+    <span class="n">burned_trace_1</span> <span class="o">=</span> <span class="n">trace_1</span><span class="p">[</span><span class="mi">10000</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div>
+    <style>
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    </style>
+  <progress value='17' class='' max='17' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [17/17 00:00<00:00 logp = -347.92, ||grad|| = 0.72964]
+</div>
+</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now visualise the posterior distribution of the group means:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figsize</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">control_mean</span> <span class="o">=</span> <span class="n">burned_trace_1</span><span class="p">[</span><span class="s1">&#39;mu_A&#39;</span><span class="p">]</span>
+<span class="n">variant_mean</span> <span class="o">=</span> <span class="n">burned_trace_1</span><span class="p">[</span><span class="s1">&#39;mu_B&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">control_mean</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Posterior distribution of $\mu_</span><span class="si">{Control_Matrix}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">variant_mean</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Posterior distribution of $\mu_</span><span class="si">{Variant_BT}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Posterior distributions for each respective group mean&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_26_0.png" src="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_26_0.png" />
+</div>
+</div>
+<p>And, standard deviations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figsize</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">control_std</span> <span class="o">=</span> <span class="n">burned_trace_1</span><span class="p">[</span><span class="s1">&#39;mu_A&#39;</span><span class="p">]</span>
+<span class="n">variant_std</span> <span class="o">=</span> <span class="n">burned_trace_1</span><span class="p">[</span><span class="s1">&#39;mu_B&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">control_std</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Posterior distribution of $\sigma_</span><span class="si">{Control_Matrix}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">variant_std</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Posterior distribution of $\sigma_</span><span class="si">{Variant_BT}</span><span class="s1">$&#39;</span><span class="p">,</span>  <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Posterior distributions of  standard derivation derived from PyMC3&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_28_0.png" src="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_28_0.png" />
+</div>
+</div>
+<p>You can now plot the posterior distribution for the difference between groups. We have red lines that represent our highest density intervals (HDI), which encompasses the points with the greatest probability density (that is the samples that are more likely than that outside the parameters passed). Although not to be confused with confidence intervals, this 95% interval can be adjusted to any given range specifided. Secondly, we have our region of practical equivalence (ROPE), which is a pre-determined range of sampled differences between experimental groups. This value will likely be determined by stakeholders and/or analysts beforehand and will be a value we look to exceed. To achieve this we would want the entire ROPE range to fall outside our 95% HDI as this is where the highest probability outcomes exist:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figsize</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">difference</span> <span class="o">=</span> <span class="n">variant_mean</span> <span class="o">-</span> <span class="n">control_mean</span> <span class="c1"># Difference of the means</span>
+
+
+<span class="n">hdi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">hpd</span><span class="p">(</span><span class="n">difference</span><span class="p">,</span> <span class="n">hdi_prob</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">)</span> <span class="c1"># The 95% HDI interval of the difference</span>
+
+
+<span class="n">rope</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#the ROPE region </span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">difference</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Differene of means&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Posterior distribution of the the difference of the means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">hdi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;HDI&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">hdi</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">rope</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ROPE&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">rope</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Posterior distribution of the the difference of mean for Metric 1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_30_0.png" src="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_30_0.png" />
+</div>
+</div>
+<p>Finally, we can plot the posterior distribution for the relative difference between experimental conditions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figsize</span><span class="p">(</span><span class="mf">12.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">rel_difference</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">variant_mean</span><span class="o">-</span><span class="n">control_mean</span><span class="p">)</span><span class="o">/</span><span class="n">variant_mean</span> <span class="c1"># Relative difference of the means</span>
+
+<span class="n">prob</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">rel_difference</span><span class="p">[</span><span class="n">rel_difference</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">rel_difference</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">rel_difference</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">density</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Relative differene of the mean metric&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Posterior distribution of the the relative difference of mean values&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;HDI&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The probability that the variant performed 1% greater than the control is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">prob</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The probability that the variant performed 1% greater than the control is: 58.47%
+</pre></div>
+</div>
+<img alt="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_32_1.png" src="_images/4_Bayesian_Estimation_Supersedes_The_T_Test_32_1.png" />
+</div>
+</div>
+<p>You can see here the probability that the variant beat the control by a certain threshold. It can be determined that there is a ~58% probability that the variant is 1% greater than the baseline. This would be deemed a flat result as the odds the variant performed better is only just greater than a coin flip. This threshold can be changed to whatever is practically important to your stakeholders/wider team, which is both invaluable in a commercial setting and unattainable using frequentist methods.</p>
+<p>In the next chapter, we will be looking at methods to reduce variance prior to post-hoc testing, these methods can increase experiment sensitivity/power; meaning you can conclude experiments at a greater velocity.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="3_Continuous_Metrics_Frequentist_Approach.html" title="previous page">3. Significance Testing for Continuous Metrics (Frequestist Approach)</a>
+    <a class='right-next' id="next-link" href="5_Variance_Reduction_Methods.html" title="next page">5. Variance Reduction Methods</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Frank Hopkins<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
