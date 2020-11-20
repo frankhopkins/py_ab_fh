@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2. Conversion Probabilities (Bayesian Approach) &#8212; A/B Testing in Python</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Significance Testing for Continuous Metrics (Frequestist Approach)" href="3_Continuous_Metrics_Frequentist_Approach.html" />
+    <link rel="prev" title="1. Conversion Probabilities (Frequentist Approach)" href="1_Conversion_Probabilities_Frequentist_Approach.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/logo_ab_fh.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">A/B Testing in Python</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1_Conversion_Probabilities_Frequentist_Approach.html">
+   1. Conversion Probabilities (Frequentist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. Conversion Probabilities (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3_Continuous_Metrics_Frequentist_Approach.html">
+   3. Significance Testing for Continuous Metrics (Frequestist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4_Bayesian_Estimation_Supersedes_The_T_Test.html">
+   4. Significance Testing for Continuous Metrics (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5_Variance_Reduction_Methods.html">
+   5. Variance Reduction Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6_Experiment_Feature_Importance.html">
+   6. Experiment Feature Importance
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/2_Conversion_Probabilities_Bayesian_Approach.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F2_Conversion_Probabilities_Bayesian_Approach.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/2_Conversion_Probabilities_Bayesian_Approach.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="conversion-probabilities-bayesian-approach">
+<h1>2. Conversion Probabilities (Bayesian Approach)<a class="headerlink" href="#conversion-probabilities-bayesian-approach" title="Permalink to this headline">¶</a></h1>
+<p>Here we are going to use our Keanu widget experiment to perform Bayesian conversion probability estimation. Now although we may reach similar conclusions to our previously used frequenist methods, the way we can translate this information is different (and in some cases, preferable). Notably, trying to explain confidence intervals and p-values to non-technical personnel can be tricky and the p-value is often (wrongly) interpreted as the probability that the experimental condition “out-performed” the control. Luckily Bayesian counter-parts to this form of significance testing provide us with this information, which is incredibly useful in a commercial setting, as this is just the information stakeholders want to know.</p>
+<p>Where frequentist measures give us a p-value and confidence intervals, Bayesian methods give us a number of posterior distributions, including: the distributions for each group mean and both absolute and relative differences between groups. Moreover, we can also get an output that shows us the probability that the variant beat the control condition. Which can be a really intuitive way to present findings to stakeholders.</p>
+<p>These calculations use the <a class="reference external" href="https://www.google.com/search?q=pymc3&amp;oq=pymc3&amp;aqs=chrome.0.0l5j69i61j69i60l2.1004j0j1&amp;sourceid=chrome&amp;ie=UTF-8">pymc3 package</a> in Python, which is a powerful library that can be used for computing <a class="reference external" href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">Markov Chain Monte-Carlo</a> simulations. These simulations are used to calculate a (pre-specified) volume of credible samples in relation to our actual conversion probabilities in order to create posterior distributions for a variety of parameters. Due to the typically large sample-sizes and random bucketing that is associated with A/B testing, we can hold a fair amount of confidence in our posterior data for both our experimental groups. We also use minimilarly minimally informative normal priors; that is they do not yield significant impact on our posterior distributions.</p>
+<p>Now, let’s dig back into our Keanu widget example.</p>
+<p>Your first going to want to import all the relevant packages for analysis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --no-progress-bar pymc3
+<span class="o">!</span>pip install --no-progress-bar numba
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage:   
+  pip install [options] &lt;requirement specifier&gt; [package-index-options] ...
+  pip install [options] -r &lt;requirements file&gt; [package-index-options] ...
+  pip install [options] [-e] &lt;vcs project url&gt; ...
+  pip install [options] [-e] &lt;local project path&gt; ...
+  pip install [options] &lt;archive url/path&gt; ...
+
+no such option: --no-progress-bar
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage:   
+  pip install [options] &lt;requirement specifier&gt; [package-index-options] ...
+  pip install [options] -r &lt;requirements file&gt; [package-index-options] ...
+  pip install [options] [-e] &lt;vcs project url&gt; ...
+  pip install [options] [-e] &lt;local project path&gt; ...
+  pip install [options] &lt;archive url/path&gt; ...
+
+no such option: --no-progress-bar
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span>
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">warn</span><span class="o">.</span><span class="n">round</span><span class="o">=</span><span class="kc">False</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">lgamma</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You’re now going to want to insert the number of unique browsers/users that were in each bucket of your experiment:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_control</span> <span class="o">=</span> <span class="mi">164246</span>
+
+<span class="n">n_variant</span> <span class="o">=</span> <span class="mi">174904</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, input the number of unique events fired in each bucket. Using the example given above, this will be the number of unique clicks on your old and new widget/element:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_control</span> <span class="o">=</span> <span class="mi">7883</span>
+
+<span class="n">e_variant</span> <span class="o">=</span> <span class="mi">10348</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create calc_prob_between function - taken from <a class="reference external" href="https://gist.github.com/vlavorini/41d5440d107cc19453c862458804787c">Calc_prob - repo</a>. This function will be used later to determine the probability the variant beat the control condition in our experiment:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">b</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">den</span> <span class="o">=</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="n">den</span><span class="p">)</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">g0</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lgamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">lgamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">lgamma</span><span class="p">(</span><span class="n">a</span><span class="p">)))</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">hiter</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="n">h</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
+
+<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">g0</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">hiter</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">calc_prob_between</span><span class="p">(</span><span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">beta1</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">beta1</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">beta2</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">beta2</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The below code sets our priors for both control and variant, respectively. Using the calc_prob_between function we have created above, we can now compute the observed uplift between experimental conditions and the probability that the variant out performed the control. Here we have used a beta distribution for our priors. In Bayesian inference, the beta distribution is the conjugate prior probability distribution for the Bernoulli distribution, which is entirely applicable to the calculation of conversion probabilities:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Control ##</span>
+
+<span class="n">a_control</span> <span class="o">=</span> <span class="n">e_control</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">b_control</span> <span class="o">=</span> <span class="n">n_control</span> <span class="o">-</span> <span class="p">(</span><span class="n">e_control</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">beta_control</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">a_control</span><span class="p">,</span> <span class="n">b_control</span><span class="p">)</span>
+
+<span class="c1">## Variant ##</span>
+
+<span class="n">a_variant</span> <span class="o">=</span> <span class="n">e_variant</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">b_variant</span> <span class="o">=</span> <span class="n">n_variant</span> <span class="o">-</span> <span class="p">(</span><span class="n">e_variant</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">beta_variant</span> <span class="o">=</span> <span class="n">beta</span><span class="p">(</span><span class="n">a_variant</span><span class="p">,</span> <span class="n">b_variant</span><span class="p">)</span>
+
+<span class="c1">## Calcuate the uplift</span>
+
+<span class="n">uplift</span> <span class="o">=</span> <span class="p">(</span><span class="n">beta_variant</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">beta_control</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">/</span><span class="n">beta_control</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The relative uplift/decrease between the Variant (Keanu - B &amp; T) and Control (The Matrix) group is:&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">uplift</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+
+<span class="c1">## Calculate the probability for test to be better than the control</span>
+
+<span class="n">prob</span> <span class="o">=</span> <span class="n">calc_prob_between</span><span class="p">(</span><span class="n">beta_variant</span><span class="p">,</span> <span class="n">beta_control</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The probability that the Variant (Keanu - B &amp; T) beat the Control (The Matrix) is:&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">prob</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The relative uplift/decrease between the Variant (Keanu - B &amp; T) and Control (The Matrix) group is: 23.267 %
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The probability that the Variant (Keanu - B &amp; T) beat the Control (The Matrix) is: 100.0 %
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="_images/keanu_uplift_2.png" /></p>
+<p>We are now ready to fit our observed data to the model and calculate/plot our posterior distributions. As we are calculating conversion probabilities, we’ll again use a beta distribution for the priors and now a Bernoulli distribution for the likelihood parameters. We can also specify in the pm.Deterministic call that we want to calculate the posterior distribution for both absolute and relative differences between groups.</p>
+<p>To finalise our model parameters we need to specify the volume of draws, the sampling method step and the initial state for MCMC to instantiate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+    
+    <span class="c1"># Define priors (use the control pirior as the null hypothesis where no difference exists between variants)</span>
+    
+    <span class="n">prior_control_matrix</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s1">&#39;prior_control&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">e_control</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">n_control</span> <span class="o">-</span> <span class="n">e_control</span><span class="p">)</span>
+    <span class="n">prior_variant_bill_and_ted</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s1">&#39;prior_variant&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">e_variant</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">n_variant</span> <span class="o">-</span> <span class="n">e_variant</span><span class="p">)</span>
+
+    <span class="c1"># Define likelihood</span>
+    
+    <span class="n">likelihood_control</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="s1">&#39;like_control&#39;</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">164246</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">prior_control_matrix</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">e_control</span><span class="p">)</span>
+    <span class="n">likelihood_variant</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="s1">&#39;like_variant&#39;</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">174904</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">prior_variant_bill_and_ted</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">e_variant</span><span class="p">)</span>
+    
+    <span class="c1"># Define metrics</span>
+    
+    <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;absolute difference&#39;</span><span class="p">,</span> <span class="n">prior_variant_bill_and_ted</span> <span class="o">-</span> <span class="n">prior_control_matrix</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;relative difference&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">prior_variant_bill_and_ted</span> <span class="o">/</span> <span class="n">prior_control_matrix</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Inference using MCMC</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Metropolis</span><span class="p">(),</span> <span class="n">start</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">find_MAP</span><span class="p">(),</span> <span class="n">progressbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING (theano.gof.compilelock): Overriding existing lock by dead process &#39;84827&#39; (I am process &#39;87659&#39;)
+</pre></div>
+</div>
+<div class="output text_html">
+<div>
+    <style>
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    </style>
+  <progress value='5' class='' max='5' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [5/5 00:00<00:00 logp = 2.2985, ||grad|| = 1.2628]
+</div>
+</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now plot all of our posterior distributions. We skip the first 1000 samples as they can be noisy. On the left column you see the posterior distributions for control, variant and both absolute and relative differences. On the right column you see the sampling value for each step of the 20,000 credible samples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">1000</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_Conversion_Probabilities_Bayesian_Approach_17_0.png" src="_images/2_Conversion_Probabilities_Bayesian_Approach_17_0.png" />
+</div>
+</div>
+<p>We can also call out individual posterior distributions for from our model. Below is the distribution for both control and variant groups. As you can see no values fall outside our highest density interval (HDI), which encompasses the points with the greatest probability density (that is the samples that are more likely than that outside the parameters passed). This means we can be extremely positive that these distributions represent where the true mean values for each group exist:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prior_control&#39;</span><span class="p">,</span> <span class="s1">&#39;prior_variant&#39;</span><span class="p">],</span> 
+                      <span class="n">ref_val</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7fae0eee02e0&gt;,
+       &lt;matplotlib.axes._subplots.AxesSubplot object at 0x7fae0a61dfa0&gt;],
+      dtype=object)
+</pre></div>
+</div>
+<img alt="_images/2_Conversion_Probabilities_Bayesian_Approach_19_1.png" src="_images/2_Conversion_Probabilities_Bayesian_Approach_19_1.png" />
+</div>
+</div>
+<p>Similarly, we can plot the posterior distributions for both absolute and relative differences between the control and variant. As you can see the HDI for the absolute difference covers values between 1 and 1.2% and the relative HDI covers values between 21 and 23%, respectively; with no draws being below 100%:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;absolute difference&#39;</span><span class="p">,</span> <span class="s1">&#39;relative difference&#39;</span><span class="p">],</span> 
+                      <span class="n">ref_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_Conversion_Probabilities_Bayesian_Approach_21_0.png" src="_images/2_Conversion_Probabilities_Bayesian_Approach_21_0.png" />
+</div>
+</div>
+<p>In the next chapter we move on to continuous (non-discrete variables), starting with frequentist methods.</p>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="1_Conversion_Probabilities_Frequentist_Approach.html" title="previous page">1. Conversion Probabilities (Frequentist Approach)</a>
+    <a class='right-next' id="next-link" href="3_Continuous_Metrics_Frequentist_Approach.html" title="next page">3. Significance Testing for Continuous Metrics (Frequestist Approach)</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Frank Hopkins<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

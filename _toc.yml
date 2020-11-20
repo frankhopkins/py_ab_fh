@@ -1,0 +1,12 @@
+# Table of content
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+
+- file: Introduction
+  sections:
+    - file: 1_Conversion_Probabilities_Frequentist_Approach
+    - file: 2_Conversion_Probabilities_Bayesian_Approach
+    - file: 3_Continuous_Metrics_Frequentist_Approach
+    - file: 4_Bayesian_Estimation_Supersedes_The_T_Test
+    - file: 5_Variance_Reduction_Methods
+    - file: 6_Experiment_Feature_Importance

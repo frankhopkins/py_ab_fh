@@ -1,0 +1,12 @@
+jupyter-book
+matplotlib
+numpy
+pymc3
+pymc
+scipy
+sklearn
+warnings
+requests
+statistics
+seaborn
+shap

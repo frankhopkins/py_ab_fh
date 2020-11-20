@@ -1,0 +1,881 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3. Significance Testing for Continuous Metrics (Frequestist Approach) &#8212; A/B Testing in Python</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Significance Testing for Continuous Metrics (Bayesian Approach)" href="4_Bayesian_Estimation_Supersedes_The_T_Test.html" />
+    <link rel="prev" title="2. Conversion Probabilities (Bayesian Approach)" href="2_Conversion_Probabilities_Bayesian_Approach.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/logo_ab_fh.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">A/B Testing in Python</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1_Conversion_Probabilities_Frequentist_Approach.html">
+   1. Conversion Probabilities (Frequentist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2_Conversion_Probabilities_Bayesian_Approach.html">
+   2. Conversion Probabilities (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3. Significance Testing for Continuous Metrics (Frequestist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4_Bayesian_Estimation_Supersedes_The_T_Test.html">
+   4. Significance Testing for Continuous Metrics (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5_Variance_Reduction_Methods.html">
+   5. Variance Reduction Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6_Experiment_Feature_Importance.html">
+   6. Experiment Feature Importance
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/3_Continuous_Metrics_Frequentist_Approach.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F3_Continuous_Metrics_Frequentist_Approach.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/3_Continuous_Metrics_Frequentist_Approach.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cleaning-data-remove-outliers">
+   Cleaning data - Remove Outliers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#significance-testing">
+   Significance testing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualisations">
+   Visualisations
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="significance-testing-for-continuous-metrics-frequestist-approach">
+<h1>3. Significance Testing for Continuous Metrics (Frequestist Approach)<a class="headerlink" href="#significance-testing-for-continuous-metrics-frequestist-approach" title="Permalink to this headline">¶</a></h1>
+<p>You have now proven to your stakeholders that including the retro imagery of Keanu has had a positive impact on click-throughs, but they now want to know that the change isn’t going to have an impact on content consumption after the user has clicked on the image. In this instance you may want to assess the performance of a continuous, non-discrete variable for each of your experimental conditions. If you are working with a continuous metric — which are variables that can take on an unlimited range of values between both the lowest and highest points of a given measurement — the T-test is probably most familiar to you and that is what this notebook will entail, computation of a parametric statistical test for a page views per session (Pvs_per_session) metric. Internal stakeholders have identified that they would like this metric to either increase or not be negatively impacted by the change.</p>
+<p>So let’s get to work.</p>
+<p>First import the necessary packages for analysis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --no-progress-bar statsmodels
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage:   
+  pip install [options] &lt;requirement specifier&gt; [package-index-options] ...
+  pip install [options] -r &lt;requirements file&gt; [package-index-options] ...
+  pip install [options] [-e] &lt;vcs project url&gt; ...
+  pip install [options] [-e] &lt;local project path&gt; ...
+  pip install [options] &lt;archive url/path&gt; ...
+
+no such option: --no-progress-bar
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.multicomp</span> <span class="kn">import</span> <span class="n">pairwise_tukeyhsd</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.multicomp</span> <span class="kn">import</span> <span class="n">MultiComparison</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Import your browser level data (each row will represent a unique id or cookie id):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">local</span> <span class="o">=</span> <span class="s1">&#39;keanu_df.csv&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">local</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode_escape&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_cookie_id</th>
+      <th>Variant</th>
+      <th>Pvs_per_session</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>##kdjdsvbnkdf</td>
+      <td>Control_Matrix</td>
+      <td>2.343523</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>kldvnlkaefv</td>
+      <td>Control_Matrix</td>
+      <td>1.234300</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>nvaljkdfnvkld4798</td>
+      <td>Control_Matrix</td>
+      <td>3.353000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>shanuf9v354###nkas</td>
+      <td>Control_Matrix</td>
+      <td>3.319751</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>nbncjkbd</td>
+      <td>Control_Matrix</td>
+      <td>3.824490</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>dkvhjdk844</td>
+      <td>Control_Matrix</td>
+      <td>8.367136</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>sjhkjfhbdwjkv</td>
+      <td>Control_Matrix</td>
+      <td>8.871875</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>kldvnlkaefv</td>
+      <td>Control_Matrix</td>
+      <td>9.376613</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>nvaljkdfnvkld4805</td>
+      <td>Control_Matrix</td>
+      <td>9.881352</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>shanuf9v361</td>
+      <td>Variant_BT</td>
+      <td>3.153445</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>You may want to group by count to ensure you have equally weighted experimental groups, in order to ascertain you have grouped/collected the data correctly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_cookie_id</th>
+      <th>Pvs_per_session</th>
+    </tr>
+    <tr>
+      <th>Variant</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Control_Matrix</th>
+      <td>99</td>
+      <td>99</td>
+    </tr>
+    <tr>
+      <th>Variant_BT</th>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You can now check the overall mean values for the Pvs_per_session metric:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pvs_per_session</th>
+    </tr>
+    <tr>
+      <th>Variant</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Control_Matrix</th>
+      <td>5.726181</td>
+    </tr>
+    <tr>
+      <th>Variant_BT</th>
+      <td>7.670531</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Before we perform any statistical analysis, it is import to check the variance within our data and if this varies for each experimental condition. First we calculate the standard deviation for each variation and then plot the distributions for Pvs_per_session:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Create seperate data-frames for experimental conditions</span>
+
+<span class="n">Control_Matrix</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Variant&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Control_Matrix&#39;</span><span class="p">)]</span>
+<span class="n">Variant_BT</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Variant&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Variant_BT&#39;</span><span class="p">)]</span>
+
+<span class="c1">## Calculate individual variance</span>
+
+<span class="n">std_control</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">Control_Matrix</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+<span class="n">std_variant</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">Variant_BT</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+
+<span class="c1">## Print values</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Standard deviation of experiment metric for control is is </span><span class="si">% s</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">std_control</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Standard deviation of experiment metric for variant is is </span><span class="si">% s</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">std_variant</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1">## Plot distributions</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">Control_Matrix</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">Variant_BT</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Control_Matrix&#39;</span><span class="p">,</span><span class="s1">&#39;Variant_BT&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Standard deviation of experiment metric for control is is 2.4498
+Standard deviation of experiment metric for variant is is 3.2979
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc7008157f0&gt;
+</pre></div>
+</div>
+<img alt="_images/3_Continuous_Metrics_Frequentist_Approach_12_2.png" src="_images/3_Continuous_Metrics_Frequentist_Approach_12_2.png" />
+</div>
+</div>
+<p>As seen above the data for our variant condition exhibits a higher standard deviation, which again is visible in our distributions. The variant Pvs_per_session data exhibits a flatter curve which covers more data points. We can now run a <a class="reference external" href="https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test">Kolmogorov–Smirnov test</a>, using the stats package in order to check the Pvs_per_session data isn’t abnormally distributed. Here we are looking for a p value &gt; 0.05 to signify our data is not significantly abnormally distributed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ks_test</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">kstest</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">,</span> <span class="s1">&#39;norm&#39;</span><span class="p">)</span>
+<span class="n">p_value_vs</span> <span class="o">=</span> <span class="n">ks_test</span><span class="o">.</span><span class="n">pvalue</span>
+
+<span class="k">if</span> <span class="n">p_value_vs</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data is abnormally distributed. Proceed to removing outliers. The p value is&quot;</span><span class="p">,(</span><span class="n">p_value_vs</span><span class="p">),)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data is not abnormally distributed and does not need cleaning.The p value is&quot;</span><span class="p">,(</span><span class="n">p_value_vs</span><span class="p">),)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data is abnormally distributed. Proceed to removing outliers. The p value is 1.968100411302251e-230
+</pre></div>
+</div>
+</div>
+</div>
+<p>As seen above p &lt; 0.05, therefore we will look to cleaning our data and omitting extreme outliers prior to statistical analysis.</p>
+<div class="section" id="cleaning-data-remove-outliers">
+<h2>Cleaning data - Remove Outliers<a class="headerlink" href="#cleaning-data-remove-outliers" title="Permalink to this headline">¶</a></h2>
+<p>Here we will look to remove data + 3 standard deviations from the mean for Pvs_per_session; this is a scientific standard and alligns with stats engines from numerous online A/B testing platforms. First identify the standard deviation for Pvs_per_session:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">std</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Pvs_per_session</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Standard deviation of experiment metric is </span><span class="si">% s</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Standard deviation of experiment metric is 3.0591
+</pre></div>
+</div>
+</div>
+</div>
+<p>Identify data &gt; 3 standard deviations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outliers</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">std</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remove data from data-frame that is </span><span class="si">% s</span><span class="s2"> above the mean of the data&quot;</span>
+     <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">outliers</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Remove data from data-frame that is 9.1774 above the mean of the data
+</pre></div>
+</div>
+</div>
+</div>
+<p>New data-frame that omits this range and look at new computed means:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pvs_per_session&#39;</span><span class="p">]</span> <span class="o">&lt;</span>  <span class="n">outliers</span><span class="p">)]</span>
+<span class="n">df_filtered</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pvs_per_session</th>
+    </tr>
+    <tr>
+      <th>Variant</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Control_Matrix</th>
+      <td>5.338705</td>
+    </tr>
+    <tr>
+      <th>Variant_BT</th>
+      <td>5.465452</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="significance-testing">
+<h2>Significance testing<a class="headerlink" href="#significance-testing" title="Permalink to this headline">¶</a></h2>
+<p>We can now perform our parametric statistical test. The code below will execute an analysis of variance (ANOVA) test, although ANOVA can handle multiple independent variables/groups, the individual test performed between each group will be a t.test, which is the most widely recognised assessment for significance testing using a frequentist framework:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span> <span class="o">=</span> <span class="n">MultiComparison</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;Pvs_per_session&#39;</span><span class="p">],</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span>
+<span class="n">mc_results</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">tukeyhsd</span><span class="p">()</span>
+<span class="n">null_hypothesis</span> <span class="o">=</span> <span class="n">mc_results</span><span class="o">.</span><span class="n">reject</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mc_results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reject null hypothesis and significant difference between experimental groups:&quot;</span><span class="p">,</span><span class="n">null_hypothesis</span><span class="p">,)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     Multiple Comparison of Means - Tukey HSD, FWER=0.05      
+==============================================================
+    group1       group2   meandiff p-adj  lower  upper  reject
+--------------------------------------------------------------
+Control_Matrix Variant_BT   0.1267 0.7328 -0.577 0.8305  False
+--------------------------------------------------------------
+Reject null hypothesis and significant difference between experimental groups: [False]
+</pre></div>
+</div>
+</div>
+</div>
+<p>As seen above, the results from this experiment are statistically non-significanct we have failed to reject our null hypothesis (that no difference exists between independent groups). Which means you can confidently tell your stakeholders that they needn’t worry about the impact on Pvs_per_session by introducing the new widget. It may have increased clicks, but failed to move the needle for our consumption metric. Below, we will look at some useful and user-friendly visualisations that you can present to stakeholders.</p>
+</div>
+<div class="section" id="visualisations">
+<h2>Visualisations<a class="headerlink" href="#visualisations" title="Permalink to this headline">¶</a></h2>
+<p>Prior to plotting data, we are going to get it in a format that makes visualisations easy to interpret. This process involves taking samples (1500) from our Pvs_per_session data for each of our experimental conditions and plotting the distribution of all of the samples. As governed by the central limit this means data will follow a normal/bell-shaped distribution with a sample mean that reflects the overall mean of the data. This is useful for visualisations as there will be no heavy skews/tails in the data whilst still maintaining the mean values for the overall mean of each experimental condition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take random samples from each experimental condition in order to transform to normal distribution to plot distributions</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># create an empty list into which I insert the sampled means</span>
+<span class="n">random_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1500</span><span class="p">)</span> <span class="c1"># random seeds for reproducibility</span>
+
+
+<span class="c1"># Sample with replacement using 50% of the data; do this 1000 times and append the mean seeling time to the list ‘results’</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1500</span><span class="p">):</span>
+ <span class="n">sample</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Variant&#39;</span><span class="p">)[</span><span class="s1">&#39;Pvs_per_session&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+ <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">dist_samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">dist_samples</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Variant</th>
+      <th>Control_Matrix</th>
+      <th>Variant_BT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.473302</td>
+      <td>5.431049</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.379704</td>
+      <td>5.179582</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>4.862050</td>
+      <td>5.835280</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>4.812345</td>
+      <td>5.872012</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.554773</td>
+      <td>5.815305</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.149590</td>
+      <td>5.641678</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.116710</td>
+      <td>5.972610</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.587683</td>
+      <td>5.571162</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.536254</td>
+      <td>5.866079</td>
+    </tr>
+    <tr>
+      <th>Pvs_per_session</th>
+      <td>5.716110</td>
+      <td>5.282069</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>Plot sampled means in boxplot for experimentation metric:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">dist_samples</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Control_Matrix&#39;</span><span class="p">,</span> 
+                                       <span class="s1">&#39;Variant_BT&#39;</span><span class="p">])</span>
+
+<span class="n">filtered</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Variant&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">filtered</span> <span class="o">=</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;Pvs_per_session&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Variant
+Control_Matrix    5.338705
+Variant_BT        5.465452
+Name: Pvs_per_session, dtype: float64
+</pre></div>
+</div>
+<img alt="_images/3_Continuous_Metrics_Frequentist_Approach_31_1.png" src="_images/3_Continuous_Metrics_Frequentist_Approach_31_1.png" />
+</div>
+</div>
+<p>Plot sampled means for metric in distribution plot:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">dist_samples</span><span class="p">[[</span><span class="s1">&#39;Control_Matrix&#39;</span><span class="p">]],</span> <span class="n">hist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">dist_samples</span><span class="p">[[</span><span class="s1">&#39;Variant_BT&#39;</span><span class="p">]],</span> <span class="n">hist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Control_Matrix&#39;</span><span class="p">,</span><span class="s1">&#39;Variant_BT&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribution of Sampled Mean Metric per Variant&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3_Continuous_Metrics_Frequentist_Approach_33_0.png" src="_images/3_Continuous_Metrics_Frequentist_Approach_33_0.png" />
+</div>
+</div>
+<p>These are some useful visualisations you can utilise to show the overlap of the data to identify the lack of difference between groups. In the next chapter we will look to perform the same analysis, but returning to our good old Bayesian estimations.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="2_Conversion_Probabilities_Bayesian_Approach.html" title="previous page">2. Conversion Probabilities (Bayesian Approach)</a>
+    <a class='right-next' id="next-link" href="4_Bayesian_Estimation_Supersedes_The_T_Test.html" title="next page">4. Significance Testing for Continuous Metrics (Bayesian Approach)</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Frank Hopkins<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

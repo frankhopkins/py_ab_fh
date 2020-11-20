@@ -1,0 +1,710 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. Conversion Probabilities (Frequentist Approach) &#8212; A/B Testing in Python</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Conversion Probabilities (Bayesian Approach)" href="2_Conversion_Probabilities_Bayesian_Approach.html" />
+    <link rel="prev" title="Introduction" href="Introduction.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  <img src="_static/logo_ab_fh.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">A/B Testing in Python</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   1. Conversion Probabilities (Frequentist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2_Conversion_Probabilities_Bayesian_Approach.html">
+   2. Conversion Probabilities (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3_Continuous_Metrics_Frequentist_Approach.html">
+   3. Significance Testing for Continuous Metrics (Frequestist Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4_Bayesian_Estimation_Supersedes_The_T_Test.html">
+   4. Significance Testing for Continuous Metrics (Bayesian Approach)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5_Variance_Reduction_Methods.html">
+   5. Variance Reduction Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6_Experiment_Feature_Importance.html">
+   6. Experiment Feature Importance
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/1_Conversion_Probabilities_Frequentist_Approach.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F1_Conversion_Probabilities_Frequentist_Approach.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/1_Conversion_Probabilities_Frequentist_Approach.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#absolute-differences">
+   Absolute differences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relative-differences">
+   Relative differences
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="conversion-probabilities-frequentist-approach">
+<h1>1. Conversion Probabilities (Frequentist Approach)<a class="headerlink" href="#conversion-probabilities-frequentist-approach" title="Permalink to this headline">¶</a></h1>
+<p>On your site, you may want to determine the proportion of users that clicked a certain widget or element on the page. Furthermore, you may have recently conducted an experiment whereby a new version of said widget/element has been changed and you want to compare its performance to your control (current) widget. This is when you will want to perform a statistical test to determine whether a statistically significant difference between groups exists.</p>
+<p>As this notebook focuses on a frequentist approach to significance testing, you will hopefully have performed power analyses prior your experiment, in order to determine an adequate enough sample size to pause your experiment. If you have not done so, I have previously developed code in R, that enables you to determine how much of a sample (per variant) is required to reach a statistically conclusive result:</p>
+<p><a class="reference external" href="https://towardsdatascience.com/ab-sample-size-calculation-in-r-ad959a4443a2">Sample-size Calculation in R - Code (Frank Hopkins, 2020)</a></p>
+<p>Here you can specify your current conversion probability and your desired uplift (minimum detectable change).</p>
+<p>This approach is broken down into absolute and relative differences, respectively and was adapted from the introduction to A/B Testing course by Udacity. This method uses confidence intervals to determine whether or not to reject your null hypothesis. This is achieved by calculating a pooled standard error of your two groups (which is the pooled probability of a click divided by the pooled sameple of the groups) and the difference between the predicted probability conversions for each group.</p>
+<p>For sake of this analysis and subsequent work books. We are going compare the results of an A/B Test I have made up whereby we are testing two different widget images to promote a Keanu Reaves boxset on www.abtestnostalgicfilms.com (this is not a real website). Major stakeholders at abtestnostalgic films are worred that the image of Keanu in Bill and Ted will not be with familar younger audiences, so are running an A/B test to measure the impact on performance. People in this experiment will be evenly distributed into two variants where they will see one of two images in the promotion:</p>
+<p><img alt="" src="_images/keanu_comp_1.png" /></p>
+<p>Now, lets get into it.</p>
+<p>Your first going to want to import all the relevant packages for analysis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span> <span class="k">as</span> <span class="nn">mt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="absolute-differences">
+<h2>Absolute differences<a class="headerlink" href="#absolute-differences" title="Permalink to this headline">¶</a></h2>
+<p>You’re now going to want to insert the number of unique browsers/users that were in each bucket of your experiment:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_control</span> <span class="o">=</span> <span class="mi">164246</span>
+
+<span class="n">n_variant</span> <span class="o">=</span> <span class="mi">174904</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, input the number of unique events fired in each bucket. Using the example given above, this will be the number of unique clicks on your old and new widget/element:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_control</span> <span class="o">=</span> <span class="mi">7883</span>
+
+<span class="n">e_variant</span> <span class="o">=</span> <span class="mi">10348</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now create a pandas data-frame that contains this information and calculates the conversion probabilities of each respective experimental condition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;variant&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;Control (Keanu - The Matrix)&#39;</span><span class="p">,</span> <span class="s1">&#39;Variant (Keanu - B &amp; T)&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;n_users&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">n_control</span><span class="p">,</span> <span class="n">n_variant</span><span class="p">],</span>
+        <span class="s1">&#39;n_events&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">e_control</span><span class="p">,</span> <span class="n">e_variant</span><span class="p">],</span>
+        <span class="p">}</span>
+
+<span class="n">experiment_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;p_conversion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;n_events&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;n_users&#39;</span><span class="p">],</span> <span class="mi">4</span><span class="p">,)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                        variant  n_users  n_events  p_conversion
+0  Control (Keanu - The Matrix)   164246      7883        0.0480
+1       Variant (Keanu - B &amp; T)   174904     10348        0.0592
+</pre></div>
+</div>
+</div>
+</div>
+<p>For a more user/stake-holder friendly representation, you can present these probabilities as %s:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_control</span> <span class="o">=</span> <span class="n">e_control</span><span class="o">/</span><span class="n">n_control</span>
+
+<span class="n">p_variant</span> <span class="o">=</span> <span class="n">e_variant</span><span class="o">/</span><span class="n">n_variant</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The conversion probability of the Control (Keanu - The Matrix) group is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">p_control</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The conversion probability of the Variant (Keanu - B &amp; T) group is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">p_variant</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The conversion probability of the Control (Keanu - The Matrix) group is 4.7995 %
+The conversion probability of the Variant (Keanu - B &amp; T) group is 5.9164 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, you need to calculate the combined/pooled conversion probability:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_pooled</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_control</span> <span class="o">+</span> <span class="n">e_variant</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n_control</span> <span class="o">+</span> <span class="n">n_variant</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The combined conversion probability is&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">p_pooled</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The combined conversion probability is 5.3755 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>And, the pooled standard error:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sd_pooled</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p_pooled</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_pooled</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_control</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="n">n_variant</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The pooled standard deviation/error is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">sd_pooled</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The pooled standard deviation/error is 0.0775 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now calculate the estimated absolute difference between conversion probabilities:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_diff</span> <span class="o">=</span> <span class="n">p_variant</span> <span class="o">-</span> <span class="n">p_control</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The estimated difference is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">e_diff</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated difference is 1.1169 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below you can set your pre-experiment parameters. You can set your significance threshold (alpha) and select the corresponding z-score (this will be then used for computation below. You can also set a pratical significance threshold, which is the absolute difference that is relevant to this experiment in its commercial context (this value should be pre-determined before your experiment is conducted):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="c1">## Z score 0.9</span>
+
+<span class="n">z_90</span> <span class="o">=</span> <span class="mf">1.645</span>
+
+<span class="c1">## Z score 0.95</span>
+
+<span class="n">z_95</span> <span class="o">=</span> <span class="mf">1.96</span>
+
+<span class="c1">## Z score 0.99</span>
+
+<span class="n">z_99</span> <span class="o">=</span> <span class="mf">2.576</span>
+
+<span class="c1"># Practical significance</span>
+
+<span class="n">prac_sig</span> <span class="o">=</span> <span class="mf">0.005</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Based on the parameters you have set above, you can now calculate the pooled margin of error:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">me</span> <span class="o">=</span> <span class="n">z_95</span> <span class="o">*</span> <span class="p">(</span><span class="n">sd_pooled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The margin of error is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">me</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The margin of error is 0.1519 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now print the result of your experiment. The absolute difference and confidence intervals will be presented. The threshold for both statistical and practical significance is also provided:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Overall change observed</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The absolute change observed due to the experiment is&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">e_diff</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+
+<span class="c1">## Confidence intervals</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Confidence intervals: [&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">e_diff</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">me</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">e_diff</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">me</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;]&quot;</span><span class="p">)</span>
+
+<span class="c1">## Result of the experiment</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;The change is statistically significant if the CI doesn&#39;t include 0. In that case, it is practically significant if the entire confidence interval is &gt;&quot;</span><span class="p">,</span><span class="n">prac_sig</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The absolute change observed due to the experiment is 1.12 %
+Confidence intervals: [ 0.965 % - 1.2688 % ]
+The change is statistically significant if the CI doesn&#39;t include 0. In that case, it is practically significant if the entire confidence interval is &gt; 0.5 % .
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see above, the experiment reached both statistical and practical significance. If you want to present a visual with the raw users, events and conversion probabilities, you can execute the following code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;variant&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;p_conversion&#39;</span><span class="p">],</span> <span class="n">ci</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Conversion probability by group&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Converted (proportion)&#39;</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                        variant  n_users  n_events  p_conversion
+0  Control (Keanu - The Matrix)   164246      7883        0.0480
+1       Variant (Keanu - B &amp; T)   174904     10348        0.0592
+</pre></div>
+</div>
+<img alt="_images/1_Conversion_Probabilities_Frequentist_Approach_25_1.png" src="_images/1_Conversion_Probabilities_Frequentist_Approach_25_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="relative-differences">
+<h2>Relative differences<a class="headerlink" href="#relative-differences" title="Permalink to this headline">¶</a></h2>
+<p>First, insert the number of unique browsers/users that were in each bucket of your experiment:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_control</span> <span class="o">=</span> <span class="mi">164246</span>
+
+<span class="n">n_variant</span> <span class="o">=</span> <span class="mi">174904</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, input the number of unique events fired in each bucket. Using the example given above, this will be the number of unique clicks on your old and new widget/element:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_control</span> <span class="o">=</span> <span class="mi">7883</span>
+
+<span class="n">e_variant</span> <span class="o">=</span> <span class="mi">10348</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now create a pandas data-frame that contains this information and calculates the conversion probabilities of each respective experimental condition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;variant&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="s1">&#39;Control (Keanu - The Matrix)&#39;</span><span class="p">,</span> <span class="s1">&#39;Variant (Keanu - B &amp; T)&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;n_users&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">n_control</span><span class="p">,</span> <span class="n">n_variant</span><span class="p">],</span>
+        <span class="s1">&#39;n_events&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">e_control</span><span class="p">,</span> <span class="n">e_variant</span><span class="p">],</span>
+        <span class="p">}</span>
+
+<span class="n">experiment_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;p_conversion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;n_events&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;n_users&#39;</span><span class="p">],</span> <span class="mi">4</span><span class="p">,)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                        variant  n_users  n_events  p_conversion
+0  Control (Keanu - The Matrix)   164246      7883        0.0480
+1       Variant (Keanu - B &amp; T)   174904     10348        0.0592
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For a more user/stake-holder friendly representation, you can present these probabilities as %s:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_control</span> <span class="o">=</span> <span class="n">e_control</span><span class="o">/</span><span class="n">n_control</span>
+
+<span class="n">p_variant</span> <span class="o">=</span> <span class="n">e_variant</span><span class="o">/</span><span class="n">n_variant</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The conversion probability of the Control (Keanu - The Matrix) group is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">p_control</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The conversion probability of the Variant (Keanu - B &amp; T) group is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">p_variant</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The conversion probability of the Control (Keanu - The Matrix) group is 4.7995 %
+The conversion probability of the Variant (Keanu - B &amp; T) group is 5.9164 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, you need to calculate the combined/pooled conversion probability:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_pooled</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_control</span> <span class="o">+</span> <span class="n">e_variant</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n_control</span> <span class="o">+</span> <span class="n">n_variant</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The combined conversion probability is&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">p_pooled</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The combined conversion probability is 5.3755 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>And, the pooled standard error:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sd_pooled</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p_pooled</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_pooled</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n_control</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="n">n_variant</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The pooled standard deviation/error is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">sd_pooled</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The pooled standard deviation/error is 0.0775 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now calculate the estimated relative difference between conversion probabilities:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_variant</span><span class="o">/</span><span class="n">p_control</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The estimated difference is&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">e_diff</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated difference is 23.2707 %
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below you can set your pre-experiment parameters. You can set your significance threshold (alpha) and select the corresponding z-score (this will be then used for computation below. You can also set a pratical significance threshold, which is the relative difference that is relevant to this experiment in its commercial context (this value should be pre-determined before your experiment is conducted):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="c1">## Z score 0.9</span>
+
+<span class="n">z_90</span> <span class="o">=</span> <span class="mf">1.645</span>
+
+<span class="c1">## Z score 0.95</span>
+
+<span class="n">z_95</span> <span class="o">=</span> <span class="mf">1.96</span>
+
+<span class="c1">## Z score 0.99</span>
+
+<span class="n">z_99</span> <span class="o">=</span> <span class="mf">2.576</span>
+
+<span class="c1"># Practical significance</span>
+
+<span class="n">prac_sig</span> <span class="o">=</span> <span class="mf">0.2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Overall change observed</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The absolute change observed due to the experiment is&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">e_diff</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+
+<span class="c1">## Confidence intervals</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Confidence intervals: [&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">e_diff</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">me</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">e_diff</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">me</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;]&quot;</span><span class="p">)</span>
+
+<span class="c1">## Result of the experiment</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;The change is statistically significant if the CI doesn&#39;t include 0. In that case, it is practically significant if the entire confidence interval is &gt;&quot;</span><span class="p">,</span><span class="n">prac_sig</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The absolute change observed due to the experiment is 23.27 %
+Confidence intervals: [ 23.1188 % - 23.4226 % ]
+The change is statistically significant if the CI doesn&#39;t include 0. In that case, it is practically significant if the entire confidence interval is &gt; 20.0 % .
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see above, the experiment reached both statistical and practical significance. If you want to present a visual with the raw users, events and conversion probabilities, you can execute the following code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;variant&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;p_conversion&#39;</span><span class="p">],</span> <span class="n">ci</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Conversion probability by group&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Converted (proportion)&#39;</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                        variant  n_users  n_events  p_conversion
+0  Control (Keanu - The Matrix)   164246      7883        0.0480
+1       Variant (Keanu - B &amp; T)   174904     10348        0.0592
+</pre></div>
+</div>
+<img alt="_images/1_Conversion_Probabilities_Frequentist_Approach_45_1.png" src="_images/1_Conversion_Probabilities_Frequentist_Approach_45_1.png" />
+</div>
+</div>
+<p>The next chapter will tackle the same experiment using Bayesian methods for calculating the difference between conversion probabilities.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="Introduction.html" title="previous page">Introduction</a>
+    <a class='right-next' id="next-link" href="2_Conversion_Probabilities_Bayesian_Approach.html" title="next page">2. Conversion Probabilities (Bayesian Approach)</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Frank Hopkins<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
