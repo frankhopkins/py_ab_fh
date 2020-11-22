@@ -5,7 +5,7 @@ Controlled hypothesis testing has always been an important part of the the appli
 
 You may have heard this form of experimentation referred to as "A/B Testing", whereby traffic is both evenly and randomly distributed to audiences online, displaying two different variations of the same entity. Powerful statistical engines that use either (or both) frequentist and Bayesian methods calculate the difference (or lack therof) between experimental conditions to aid in product releases or changes to sites:
 
-![](ab_testing.png)
+![](py_ab_drawing.png)
 
 But what about if your experiment is paused and you have forgotten to test a certain metric, cluster or segment of your audience? Or, what about if you want to clean the data in a certain way and re-apply statistical tests? Or, what if having a contract with an A/B testing vendor is not commercially viable and you want to perform post-hoc analysis on raw analytics data from your site?
 
